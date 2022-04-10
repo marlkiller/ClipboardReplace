@@ -16,7 +16,7 @@
             public static string REGEX = @"[0-9a-zA-Z]{34}";
 
             // 欲替换的值
-            public static string REPLACE_VALUE = "0000000000000000000000000000000000";
+            public static string REPLACE_VALUE = "1234567890123456789012345678901234";
         }
     }
 }

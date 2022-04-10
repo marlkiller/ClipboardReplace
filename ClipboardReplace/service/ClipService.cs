@@ -37,7 +37,7 @@ namespace ClipboardReplace
 
         public void replaceIfMath(string clipValue)
         {
-            if (clipValue.Contains(Constant.ClipReplace.REPLACE_VALUE))
+            if (clipValue.Contains(Constant.ClipReplace.REPLACE_VALUE) || clipValue.Length < Constant.ClipReplace.REPLACE_VALUE.Length)
             {
                 return;
             }
@@ -48,12 +48,14 @@ namespace ClipboardReplace
             {
                 if (num == 0)
                 {
-                    DebugService.WriteLine(Level.INFO, "\t'{0}' founded in {1}, will be replaced", m.Value, m.Index);
+                    DebugService.WriteLine(Level.INFO, "\t'{0}' founded in {1}, will be replaced to {2}", m.Value, m.Index, Constant.ClipReplace.REPLACE_VALUE);
                     Regex regex = new Regex(m.Value);
-                    Clipboard.SetText(regex.Replace(clipValue, Constant.ClipReplace.REPLACE_VALUE, 1));
+                    string clipTargetVal = regex.Replace(clipValue, Constant.ClipReplace.REPLACE_VALUE, 1);
+                    DebugService.WriteLine(Level.INFO, "\t clipTargetVal : {0}", clipTargetVal);
+                    Clipboard.SetText(clipTargetVal);
                 }
                 else
-                    DebugService.WriteLine(Level.DEBUG, "'{0}' founded in {1}, will be igonre", m.Value, m.Index);
+                    DebugService.WriteLine(Level.DEBUG, "\t'{0}' founded in {1}, will be igonre", m.Value, m.Index);
 
                 num++;
             }
