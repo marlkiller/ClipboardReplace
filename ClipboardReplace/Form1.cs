@@ -39,7 +39,7 @@ namespace ClipboardReplace
                 {
                     try
                     {
-                        DebugService.WriteLine(Level.DEBUG, @"Clipboard GET {0}:{1}", "TEXT", Clipboard.GetText());
+                        DebugService.WriteLine(Level.DEBUG, @"Clipboard GET {0}:{1}", "TEXT", "\r\n--------------------\r\n" +  Clipboard.GetText() + "\r\n--------------------\r\n");
                         clipService.replaceIfMath(Clipboard.GetText());
                     }
                     catch (Exception e)

